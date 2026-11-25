@@ -4,20 +4,16 @@ import pandas as pd
 import joblib
 from pathlib import Path
 
-# ==========================================================
-# 1. CONFIGURAÇÃO DA PÁGINA
-# ==========================================================
 
+#CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
     page_title=" Análise de Crédito",
     page_icon="📊",
     layout="wide"
 )
 
-# ==========================================================
-# 2. IDENTIDADE VISUAL
-# ==========================================================
 
+#IDENTIDADE VISUAL
 st.markdown("""
 <style>
 
@@ -170,19 +166,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ==========================================================
-# 3. CARREGAMENTO DO MODELO E DO THRESHOLD
-# ==========================================================
-
+#CARREGAMENTO DO MODELO E DO THRESHOLD
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MODELS_DIR = BASE_DIR / "models"
 ENCODERS_DIR = BASE_DIR / "encoders"
 
-
-# ==========================================================
-# 4. CARREGAMENTO DOS ENCODERS
-# ==========================================================
+#CARREGAMENTO DOS ENCODERS
 
 # Carregar modelo e threshold
 arquivo_modelo = MODELS_DIR / "Melhor_Modelo.pkl"
@@ -203,10 +193,8 @@ encoders = {
         "Checking account"
     ]
 }
-# ==========================================================
-# 5. CABEÇALHO
-# ==========================================================
 
+# CABEÇALHO
 st.markdown(
     '<div class="main-title">Análise de Risco de Crédito</div>',
     unsafe_allow_html=True
@@ -222,10 +210,7 @@ st.markdown(
 
 st.divider()
 
-
-# ==========================================================
-# 6. FORMULÁRIO DE ENTRADA
-# ==========================================================
+#FORMULÁRIO DE ENTRADA
 
 st.markdown(
     '<div class="section-title">01 | Perfil do solicitante</div>',
@@ -328,11 +313,7 @@ with col2:
 
 st.divider()
 
-
-# ==========================================================
-# 7. EXECUÇÃO DA PREVISÃO
-# ==========================================================
-
+#EXECUÇÃO DA PREVISÃO
 if st.button(
     "REALIZAR ANÁLISE DE CRÉDITO",
     use_container_width=True,
@@ -374,10 +355,7 @@ if st.button(
         classificacao = "Good"
 
 
-    # ======================================================
-    # 8. RESULTADO DA ANÁLISE
-    # ======================================================
-
+    #RESULTADO DA ANÁLISE
     st.divider()
 
     st.markdown(
@@ -413,11 +391,9 @@ if st.button(
             "inferior ao limite de classificação estabelecido."
         )
 
-
-    # ======================================================
-    # 9. INDICADORES PRINCIPAIS
-    # ======================================================
-
+   
+    #INDICADORES PRINCIPAIS
+  
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -439,10 +415,8 @@ if st.button(
         )
 
 
-    # ======================================================
-    # 10. INDICADOR VISUAL DE RISCO
-    # ======================================================
-
+    # INDICADOR VISUAL DE RISCO
+   
     st.markdown("### Indicador de risco")
 
     st.progress(float(prob_bad))
