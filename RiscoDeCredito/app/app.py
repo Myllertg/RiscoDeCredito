@@ -174,11 +174,10 @@ st.markdown("""
 # 3. CARREGAMENTO DO MODELO E DO THRESHOLD
 # ==========================================================
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-MODELS_DIR = BASE_DIR / "riscodecredito" / "models"
-ENCODERS_DIR = BASE_DIR / "riscodecredito" / "encoders"
+MODELS_DIR = BASE_DIR / "models"
+ENCODERS_DIR = BASE_DIR / "encoders"
 
 
 # ==========================================================
