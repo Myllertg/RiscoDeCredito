@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# ==========================================================
-# 1. CONFIGURAÇÃO DA PÁGINA
-# ==========================================================
+
+#CONFIGURAÇÃO DA PÁGINA
+
 
 st.set_page_config(
     page_title="Nexus | Análise de Crédito",
@@ -13,88 +13,184 @@ st.set_page_config(
     layout="wide"
 )
 
-# ==========================================================
-# 2. IDENTIDADE VISUAL
-# ==========================================================
+#IDENTIDADE VISUAL
+
 
 st.markdown("""
 <style>
+
+    /* Fundo principal */
+    .stApp {
+        background-color: #F4F7FB;
+        color: #1E293B;
+    }
+
+    /* Área de conteúdo */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
         max-width: 1200px;
     }
 
+    /* Título principal */
     .main-title {
         font-size: 32px;
         font-weight: 700;
-        color: #1E293B;
+        color: #17365D;
         margin-bottom: 5px;
     }
 
+    /* Subtítulo */
     .subtitle {
         color: #64748B;
         font-size: 15px;
         margin-bottom: 25px;
     }
 
+    /* Títulos das seções */
     .section-title {
         font-size: 19px;
-        font-weight: 600;
-        color: #1E293B;
+        font-weight: 650;
+        color: #17365D;
         margin-top: 10px;
         margin-bottom: 15px;
     }
 
+    /* Textos gerais */
+    p, label, .stMarkdown {
+        color: #334155;
+    }
+
+    /* Campos de entrada */
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="input"] > div,
+    div[data-baseweb="base-input"] {
+        background-color: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        border-radius: 7px;
+    }
+
+    /* Texto dentro dos campos */
+    div[data-baseweb="select"] *,
+    div[data-baseweb="input"] input {
+        color: #1E293B !important;
+    }
+
+    /* Labels */
+    .stSelectbox label,
+    .stNumberInput label {
+        color: #334155 !important;
+        font-weight: 600;
+    }
+
+    /* Botão principal */
+    .stButton > button {
+        background-color: #1D4ED8;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        padding: 12px;
+        transition: 0.2s;
+    }
+
+    .stButton > button:hover {
+        background-color: #1E40AF;
+        color: #FFFFFF;
+        border: none;
+    }
+
+    /* Cartões dos indicadores */
+    div[data-testid="stMetric"] {
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        padding: 18px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+    }
+
+    /* Título dos indicadores */
+    div[data-testid="stMetricLabel"] {
+        color: #64748B !important;
+    }
+
+    /* Valores dos indicadores */
+    div[data-testid="stMetricValue"] {
+        color: #17365D !important;
+        font-weight: 700;
+    }
+
+    /* Cartão de resultado */
     .result-card {
         padding: 22px;
-        border-radius: 12px;
-        background-color: #F1F5F9;
+        border-radius: 10px;
+        background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
         margin-top: 15px;
     }
 
+    /* Risco elevado */
     .risk-high {
         color: #DC2626;
         font-size: 25px;
         font-weight: 700;
     }
 
+    /* Risco reduzido */
     .risk-low {
         color: #15803D;
         font-size: 25px;
         font-weight: 700;
     }
 
+    /* Textos auxiliares */
     .small-text {
         color: #64748B;
         font-size: 13px;
     }
 
-    div[data-testid="stMetric"] {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        padding: 15px;
+    /* Barra de progresso */
+    div[data-testid="stProgress"] > div {
+        background-color: #E2E8F0;
         border-radius: 10px;
+    }
+
+    div[data-testid="stProgress"] > div > div {
+        background-color: #2563EB;
+        border-radius: 10px;
+    }
+
+    /* Linhas divisórias */
+    hr {
+        border-color: #DCE4EE;
+    }
+
+    /* Expander */
+    div[data-testid="stExpander"] {
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+    }
+
+    /* Tabela */
+    div[data-testid="stDataFrame"] {
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        overflow: hidden;
     }
 
 </style>
 """, unsafe_allow_html=True)
 
+# CARREGAMENTO DO MODELO E DO THRESHOLD
 
-# ==========================================================
-# 3. CARREGAMENTO DO MODELO E DO THRESHOLD
-# ==========================================================
 
 arquivo = joblib.load("Melhor_Modelo.pkl")
 
 model = arquivo["modelo"]
 threshold = arquivo["threshold"]
 
-
-# ==========================================================
-# 4. CARREGAMENTO DOS ENCODERS
-# ==========================================================
+#CARREGAMENTO DOS ENCODERS
 
 encoders = {
     col: joblib.load(f"{col}_encoder.pkl")
@@ -107,9 +203,7 @@ encoders = {
 }
 
 
-# ==========================================================
-# 5. CABEÇALHO
-# ==========================================================
+#CABEÇALHO
 
 st.markdown(
     '<div class="main-title">Análise de Risco de Crédito</div>',
@@ -126,10 +220,7 @@ st.markdown(
 
 st.divider()
 
-
-# ==========================================================
-# 6. FORMULÁRIO DE ENTRADA
-# ==========================================================
+#FORMULÁRIO DE ENTRADA
 
 st.markdown(
     '<div class="section-title">01 | Perfil do solicitante</div>',
@@ -232,10 +323,7 @@ with col2:
 
 st.divider()
 
-
-# ==========================================================
-# 7. EXECUÇÃO DA PREVISÃO
-# ==========================================================
+#EXECUÇÃO DA PREVISÃO
 
 if st.button(
     "REALIZAR ANÁLISE DE CRÉDITO",
@@ -277,10 +365,8 @@ if st.button(
         resultado = "RISCO DE CRÉDITO REDUZIDO"
         classificacao = "Good"
 
-    # ======================================================
-    # 8. RESULTADO DA ANÁLISE
-    # ======================================================
-
+   
+    #RESULTADO DA ANÁLISE
     st.divider()
 
     st.markdown(
@@ -322,10 +408,8 @@ if st.button(
             f"{threshold:.0%}"
         )
 
-    # ======================================================
-    # 9. INDICADOR VISUAL DE RISCO
-    # ======================================================
-
+    
+    #INDICADOR VISUAL DE RISCO 
     st.markdown("### Indicador de risco")
 
     st.progress(float(prob_bad))
@@ -334,10 +418,8 @@ if st.button(
         f"Probabilidade estimada de crédito ruim: {prob_bad:.2%}"
     )
 
-    # ======================================================
-    # 10. RESUMO DA ANÁLISE
-    # ======================================================
-
+   
+    #RESUMO DA ANÁLISE
     with st.expander("Visualizar dados analisados"):
 
         resumo = pd.DataFrame({
@@ -369,27 +451,8 @@ if st.button(
             hide_index=True
         )
 
-    # ======================================================
-    # 11. AVISO
-    # ======================================================
-
-    st.info(
-        "Esta avaliação é uma estimativa produzida por um modelo "
-        "experimental de Machine Learning. O resultado não representa "
-        "uma decisão definitiva de concessão ou recusa de crédito."
-    )
-
-
-# ==========================================================
-# 12. RODAPÉ
-# ==========================================================
+    
 
 st.divider()
 
-st.markdown(
-    '<div style="text-align:center; color:#94A3B8; font-size:12px;">'
-    'Sistema demonstrativo de análise de risco de crédito | '
-    'Machine Learning com XGBoost'
-    '</div>',
-    unsafe_allow_html=True
-)
+
