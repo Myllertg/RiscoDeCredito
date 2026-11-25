@@ -8,7 +8,7 @@ import joblib
 # ==========================================================
 
 st.set_page_config(
-    page_title="Nexus | Análise de Crédito",
+    page_title=" Análise de Crédito",
     page_icon="📊",
     layout="wide"
 )
@@ -173,18 +173,28 @@ st.markdown("""
 # 3. CARREGAMENTO DO MODELO E DO THRESHOLD
 # ==========================================================
 
-arquivo = joblib.load("Melhor_Modelo.pkl")
+BASE_DIR = Path(__file__).resolve().parent
 
-model = arquivo["modelo"]
-threshold = arquivo["threshold"]
+MODELS_DIR = BASE_DIR / "models"
+ENCODERS_DIR = BASE_DIR / "encoders"
 
 
 # ==========================================================
 # 4. CARREGAMENTO DOS ENCODERS
 # ==========================================================
 
+# Carregar modelo e threshold
+arquivo_modelo = MODELS_DIR / "Melhor_Modelo.pkl"
+
+arquivo = joblib.load(arquivo_modelo)
+
+model = arquivo["modelo"]
+threshold = arquivo["threshold"]
+
+
+# Carregar encoders
 encoders = {
-    col: joblib.load(f"{col}_encoder.pkl")
+    col: joblib.load(ENCODERS_DIR / f"{col}_encoder.pkl")
     for col in [
         "Sex",
         "Housing",
@@ -192,8 +202,6 @@ encoders = {
         "Checking account"
     ]
 }
-
-
 # ==========================================================
 # 5. CABEÇALHO
 # ==========================================================
