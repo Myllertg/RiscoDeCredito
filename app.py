@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-
-#CONFIGURAÇÃO DA PÁGINA
-
+# ==========================================================
+# 1. CONFIGURAÇÃO DA PÁGINA
+# ==========================================================
 
 st.set_page_config(
     page_title="Nexus | Análise de Crédito",
@@ -13,8 +13,9 @@ st.set_page_config(
     layout="wide"
 )
 
-#IDENTIDADE VISUAL
-
+# ==========================================================
+# 2. IDENTIDADE VISUAL
+# ==========================================================
 
 st.markdown("""
 <style>
@@ -57,7 +58,7 @@ st.markdown("""
     }
 
     /* Textos gerais */
-    p, label, .stMarkdown {
+    p, label {
         color: #334155;
     }
 
@@ -85,19 +86,31 @@ st.markdown("""
 
     /* Botão principal */
     .stButton > button {
-        background-color: #1D4ED8;
-        color: #FFFFFF;
-        border: none;
+        background-color: #1D4ED8 !important;
+        color: #FFFFFF !important;
+        border: none !important;
         border-radius: 8px;
         font-weight: 600;
         padding: 12px;
         transition: 0.2s;
     }
 
+    /* Texto do botão */
+    .stButton > button p,
+    .stButton > button span {
+        color: #FFFFFF !important;
+    }
+
+    /* Efeito ao passar o mouse */
     .stButton > button:hover {
-        background-color: #1E40AF;
-        color: #FFFFFF;
-        border: none;
+        background-color: #1E40AF !important;
+        color: #FFFFFF !important;
+        border: none !important;
+    }
+
+    .stButton > button:hover p,
+    .stButton > button:hover span {
+        color: #FFFFFF !important;
     }
 
     /* Cartões dos indicadores */
@@ -120,33 +133,20 @@ st.markdown("""
         font-weight: 700;
     }
 
-    /* Cartão de resultado */
-    .result-card {
-        padding: 22px;
-        border-radius: 10px;
-        background-color: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        margin-top: 15px;
-    }
-
-    /* Risco elevado */
+    /* Resultado de risco elevado */
     .risk-high {
-        color: #DC2626;
+        color: #DC2626 !important;
         font-size: 25px;
         font-weight: 700;
+        margin-bottom: 10px;
     }
 
-    /* Risco reduzido */
+    /* Resultado de risco reduzido */
     .risk-low {
-        color: #15803D;
+        color: #15803D !important;
         font-size: 25px;
         font-weight: 700;
-    }
-
-    /* Textos auxiliares */
-    .small-text {
-        color: #64748B;
-        font-size: 13px;
+        margin-bottom: 10px;
     }
 
     /* Barra de progresso */
@@ -165,32 +165,23 @@ st.markdown("""
         border-color: #DCE4EE;
     }
 
-    /* Expander */
-    div[data-testid="stExpander"] {
-        background-color: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-    }
-
-    /* Tabela */
-    div[data-testid="stDataFrame"] {
-        border: 1px solid #E2E8F0;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
-# CARREGAMENTO DO MODELO E DO THRESHOLD
 
+# ==========================================================
+# 3. CARREGAMENTO DO MODELO E DO THRESHOLD
+# ==========================================================
 
 arquivo = joblib.load("Melhor_Modelo.pkl")
 
 model = arquivo["modelo"]
 threshold = arquivo["threshold"]
 
-#CARREGAMENTO DOS ENCODERS
+
+# ==========================================================
+# 4. CARREGAMENTO DOS ENCODERS
+# ==========================================================
 
 encoders = {
     col: joblib.load(f"{col}_encoder.pkl")
@@ -203,7 +194,9 @@ encoders = {
 }
 
 
-#CABEÇALHO
+# ==========================================================
+# 5. CABEÇALHO
+# ==========================================================
 
 st.markdown(
     '<div class="main-title">Análise de Risco de Crédito</div>',
@@ -220,7 +213,10 @@ st.markdown(
 
 st.divider()
 
-#FORMULÁRIO DE ENTRADA
+
+# ==========================================================
+# 6. FORMULÁRIO DE ENTRADA
+# ==========================================================
 
 st.markdown(
     '<div class="section-title">01 | Perfil do solicitante</div>',
@@ -323,7 +319,10 @@ with col2:
 
 st.divider()
 
-#EXECUÇÃO DA PREVISÃO
+
+# ==========================================================
+# 7. EXECUÇÃO DA PREVISÃO
+# ==========================================================
 
 if st.button(
     "REALIZAR ANÁLISE DE CRÉDITO",
@@ -365,8 +364,11 @@ if st.button(
         resultado = "RISCO DE CRÉDITO REDUZIDO"
         classificacao = "Good"
 
-   
-    #RESULTADO DA ANÁLISE
+
+    # ======================================================
+    # 8. RESULTADO DA ANÁLISE
+    # ======================================================
+
     st.divider()
 
     st.markdown(
@@ -375,19 +377,38 @@ if st.button(
     )
 
     if classificacao == "Bad":
-        st.error(resultado)
+
+        st.markdown(
+            '<div class="risk-high">'
+            'RISCO DE CRÉDITO ELEVADO'
+            '</div>',
+            unsafe_allow_html=True
+        )
+
         st.write(
             "O modelo identificou uma probabilidade de crédito ruim "
             "igual ou superior ao limite de classificação estabelecido."
         )
+
     else:
-        st.success(resultado)
+
+        st.markdown(
+            '<div class="risk-low">'
+            'RISCO DE CRÉDITO REDUZIDO'
+            '</div>',
+            unsafe_allow_html=True
+        )
+
         st.write(
             "O modelo identificou uma probabilidade de crédito ruim "
             "inferior ao limite de classificação estabelecido."
         )
 
-    # Indicadores principais
+
+    # ======================================================
+    # 9. INDICADORES PRINCIPAIS
+    # ======================================================
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -408,8 +429,11 @@ if st.button(
             f"{threshold:.0%}"
         )
 
-    
-    #INDICADOR VISUAL DE RISCO 
+
+    # ======================================================
+    # 10. INDICADOR VISUAL DE RISCO
+    # ======================================================
+
     st.markdown("### Indicador de risco")
 
     st.progress(float(prob_bad))
@@ -418,41 +442,5 @@ if st.button(
         f"Probabilidade estimada de crédito ruim: {prob_bad:.2%}"
     )
 
-   
-    #RESUMO DA ANÁLISE
-    with st.expander("Visualizar dados analisados"):
-
-        resumo = pd.DataFrame({
-            "Informação": [
-                "Idade",
-                "Sexo",
-                "Categoria profissional",
-                "Tipo de moradia",
-                "Poupança",
-                "Conta corrente",
-                "Valor do crédito",
-                "Prazo"
-            ],
-            "Valor informado": [
-                f"{age} anos",
-                "Masculino" if sex == "male" else "Feminino",
-                f"Categoria {job}",
-                housing,
-                saving_accounts,
-                checking_account,
-                f"R$ {credit_amount:,.2f}",
-                f"{duration} meses"
-            ]
-        })
-
-        st.dataframe(
-            resumo,
-            use_container_width=True,
-            hide_index=True
-        )
-
-    
 
 st.divider()
-
-
