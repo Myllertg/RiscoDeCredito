@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from pathlib import Path
 
 # ==========================================================
 # 1. CONFIGURAÇÃO DA PÁGINA
@@ -175,8 +176,9 @@ st.markdown("""
 
 BASE_DIR = Path(__file__).resolve().parent
 
-MODELS_DIR = BASE_DIR / "models"
-ENCODERS_DIR = BASE_DIR / "encoders"
+
+MODELS_DIR = BASE_DIR / "riscodecredito" / "models"
+ENCODERS_DIR = BASE_DIR / "riscodecredito" / "encoders"
 
 
 # ==========================================================
