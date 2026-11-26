@@ -1,4 +1,5 @@
 # Análise de Risco de Crédito | Machine Learning
+[🇧🇷 Português](./README.md) | [🇺🇸 English](./README.en.md)
 
 ## Sobre o projeto
 
